@@ -16,7 +16,7 @@ export type DomainTodolist = Todolist & {
 
 export const todolistsSlice = createSlice({
   initialState: [] as DomainTodolist[],
-  name: "todolists", 
+  name: "todolists",
   reducers: (create) => ({
     removeTodolist: create.reducer<{ id: string }>((state, action) => {
       const todolistId = state.findIndex((todo) => todo.id === action.payload.id)
@@ -56,9 +56,13 @@ export const todolistsSlice = createSlice({
       return []
     }),
   }),
+  selectors: {
+    selectTodolists: (state) => state,
+  },
 })
 
 export const todolistsReducer = todolistsSlice.reducer
+export const { selectTodolists } = todolistsSlice.selectors
 export const {
   removeTodolist,
   setTodolists,

@@ -3,7 +3,7 @@ import { handleServerAppError } from "common/utils/handleServerAppError"
 import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
 import { Dispatch } from "redux"
 import { setAppStatus } from "../../../app/app-reducer"
-import { clearTasksAC } from "../../todolists/model/tasks-reducer"
+import { clearTasks } from "../../todolists/model/tasks-reducer"
 import { clearTodolists, setTodolists } from "../../todolists/model/todolists-reducer"
 import { authApi } from "../api/authAPI"
 import { LoginArgs } from "../api/authAPI.types"
@@ -55,7 +55,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
       if (res.data.resultCode === ResultCode.Success) {
         dispatch(setAppStatus({ status: "succeeded" }))
         dispatch(setIsLoggedIn({ isLoggedIn: false }))
-        dispatch(clearTasksAC())
+        dispatch(clearTasks())
         dispatch(clearTodolists())
         localStorage.removeItem("sn-to ken")
       } else {
