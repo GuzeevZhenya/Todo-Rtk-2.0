@@ -2,7 +2,7 @@ import { instance } from "common/instance"
 import { BaseResponse } from "common/types"
 import { Todolist } from "./todolistsApi.types"
 
-export const todolistsApi = {
+export const _todolistsApi = {
   getTodolists() {
     return instance.get<Todolist[]>("todo-lists")
   },

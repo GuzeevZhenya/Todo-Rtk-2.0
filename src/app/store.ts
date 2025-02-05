@@ -1,27 +1,23 @@
-import { UnknownAction } from "redux"
-import { ThunkAction, ThunkDispatch } from "redux-thunk"
-import { authReducer } from "../features/auth/model/auth-reducer"
-import { tasksReducer } from "../features/todolists/model/tasks-reducer"
-import { todolistsReducer } from "../features/todolists/model/todolists-reducer"
-import { appReducer } from "./app-reducer"
 import { configureStore } from "@reduxjs/toolkit"
+import { authReducer, authSlice } from "../features/auth/model/authSlice"
+import { tasksReducer, tasksSlice } from "../features/todolists/model/tasksSlice"
+import { todolistsApi, todolistsReducer, todolistsSlice } from "../features/todolists/model/todolistsSlice"
+import { appReducer, appSlice } from "./appSlice"
+import { setupListeners } from "@reduxjs/toolkit/query"
 
 export const store = configureStore({
   reducer: {
-    tasks: tasksReducer,
-    todolists: todolistsReducer,
-    app: appReducer,
-    auth: authReducer,
+    [tasksSlice.name]: tasksReducer,
+    [todolistsSlice.name]: todolistsReducer,
+    [appSlice.name]: appReducer,
+    [authSlice.name]: authReducer,
+    [todolistsApi.reducerPath]: todolistsApi.reducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(todolistsApi.middleware),
 })
 
-export type AppRootStateType = ReturnType<typeof store.getState>
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, UnknownAction>
+setupListeners(store.dispatch)
 
-// export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>
 
-// Создаем тип диспатча который принимает как AC так и TC
-export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, UnknownAction>
-
-// @ts-ignore
-window.store = store
+export type AppDispatch = typeof store.dispatch
