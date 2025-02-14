@@ -14,8 +14,7 @@ export const store = configureStore({
     [authSlice.name]: authReducer,
     [todolistsApi.reducerPath]: todolistsApi.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(todolistsApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(todolistsApi.middleware),
 })
 
 setupListeners(store.dispatch)

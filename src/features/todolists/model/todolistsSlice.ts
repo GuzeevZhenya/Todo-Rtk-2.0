@@ -3,9 +3,8 @@ import { ResultCode } from "common/enums"
 import { handleServerAppError, handleServerNetworkError } from "common/utils"
 import { Dispatch } from "redux"
 import { RequestStatus, setAppStatus } from "../../../app/appSlice"
-import { _todolistsApi } from "../api/todolistsApi"
+// import { _todolistsApi } from "../api/todolistsApi"
 import { Todolist } from "../api/todolistsApi.types"
-
 
 export type FilterValuesType = "all" | "active" | "completed"
 
@@ -56,7 +55,6 @@ export const todolistsSlice = createSlice({
     selectTodolists: (state) => state,
   },
 })
-
 
 export const {
   removeTodolist,
