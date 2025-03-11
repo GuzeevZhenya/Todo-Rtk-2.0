@@ -10,9 +10,11 @@ import { useAppDispatch, useAppSelector } from "common/hooks"
 import { getTheme } from "common/theme"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { Navigate } from "react-router-dom"
-import { selectThemeMode } from "../../../../app/appSlice"
-import { loginTC, selectIsLoggedIn } from "../../model/authSlice"
+import { selectIsLoggedIn, selectThemeMode, setIsLoggedIn } from "../../../../app/appSlice"
 import s from "./Login.module.css"
+import { useLoginMutation } from "features/auth/api/authAPI"
+import { handleServerNetworkError } from "common/utils"
+import { ResultCode } from "common/enums"
 
 type Inputs = {
   email: string
@@ -26,6 +28,7 @@ export const Login = () => {
   const theme = getTheme(themeMode)
 
   const dispatch = useAppDispatch()
+  const [login, { error, isError }] = useLoginMutation()
 
   const {
     register,
@@ -35,13 +38,21 @@ export const Login = () => {
     formState: { errors },
   } = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    dispatch(loginTC(data))
-    reset()
-  }
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const res = await login(data);
+      if (res.data?.resultCode === ResultCode.Success) {
+        dispatch(setIsLoggedIn({ isLoggedIn: true }));
+        localStorage.setItem("sn-token", res.data?.data.token);
+        reset()
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
 
   if (isLoggedIn) {
-    return <Navigate to={"/"} />
+    return <Navigate to={'/'} />
   }
 
   return (
