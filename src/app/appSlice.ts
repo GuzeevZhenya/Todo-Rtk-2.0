@@ -26,6 +26,36 @@ export const appSlice = createSlice({
       state.isLoggedIn = action.payload.isLoggedIn
     }),
   }),
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(
+        (action) => {
+          console.log("predicate", action.type)
+          return action.type.endWith("/pending")
+        },
+        (state, action) => {
+          state.status = "loading"
+        },
+      )
+      .addMatcher(
+        (action) => {
+          console.log("predicate", action.type)
+          return action.type.endWith("/rejected")
+        },
+        (state, action) => {
+          state.status = "failed"
+        },
+      )
+      .addMatcher(
+        (action) => {
+          console.log("predicate", action.type)
+          return action.type.endWith("/fulfiled")
+        },
+        (state, action) => {
+          state.status = "succeeded"
+        },
+      )
+  },
   selectors: {
     selectThemeMode: (state) => state.themeMode,
     selectAppStatus: (state) => state.status,

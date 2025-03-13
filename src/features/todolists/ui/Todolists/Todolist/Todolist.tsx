@@ -18,6 +18,7 @@ export const Todolist = ({ todolist }: Props) => {
     addTask({ title, todolistId: todolist.id })
   }
 
+
   return (
     <>
       <TodolistTitle todolist={todolist} />

@@ -13,6 +13,7 @@ export const tasksSlice = createSlice({
       return {}
     }),
   }),
+
   selectors: {
     selectTasks: (state) => state,
   },
